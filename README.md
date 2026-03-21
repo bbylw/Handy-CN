@@ -1,5 +1,7 @@
 # Handy
 
+> **汉化说明**：本文档为 [Handy](https://github.com/cjpais/Handy) 项目的中文翻译版本，原项目地址：https://github.com/cjpais/Handy
+
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/WVBeWsNXK4)
 
 **一款免费、开源且可扩展的离线语音转文字应用程序。**
@@ -391,15 +393,15 @@ Handy 可以自动发现放置在 `models` 目录中的自定义 Whisper GGML �
   我们感谢赞助商的支持，使 Handy 成为可能：
   <br><br>
   <a href="https://wordcab.com">
-    <img src="sponsor-images/wordcab.png" alt="Wordcab" width="120" height="120">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/wordcab.png" alt="Wordcab" width="120" height="120">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/epicenter-so/epicenter">
-    <img src="sponsor-images/epicenter.png" alt="Epicenter" width="120" height="120">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/epicenter.png" alt="Epicenter" width="120" height="120">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://boltai.com?utm_source=handy">
-    <img src="sponsor-images/boltai.jpg" alt="Bolt AI" width="120" height="120">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/boltai.jpg" alt="Bolt AI" width="120" height="120">
   </a>
 </div>
 
