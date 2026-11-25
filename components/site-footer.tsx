@@ -19,7 +19,7 @@ const groups: FooterGroup[] = [
       { label: '下载', href: 'https://github.com/cjpais/Handy/releases', external: true },
       { label: '构建指南', href: 'https://github.com/cjpais/Handy/blob/main/BUILD.md', external: true },
       { label: '官方网站', href: 'https://handy.computer', external: true },
-      { label: '上游文档', href: 'https://handy.computer/docs', external: true },
+      { label: '官方文档', href: 'https://handy.computer/docs', external: true },
     ],
   },
   {
