@@ -1,6 +1,8 @@
 # Handy
 
 > **汉化说明**：本文档为 [Handy](https://github.com/cjpais/Handy) 项目的中文翻译版本，原项目地址：https://github.com/cjpais/Handy
+>
+> 当前对应上游版本：**v0.10.2**（2026 年 11 月）
 
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/WVBeWsNXK4)
 
@@ -17,11 +19,9 @@ Handy 的诞生是为了填补一款真正开源、可扩展的语音转文字�
 - **隐私保护**：你的声音留在你自己的电脑上。获取转录而不必向云端发送音频
 - **简单**：一个工具，一个功能。转录你说的话并输入到文本框中
 
-Handy 并不追求成为最好的语音转文字应用——它追求的是成为最容易复刻的应用。
-
 ## 工作原理
 
-1. **按下**可配置的键盘快捷键开始/停止录音（或使用按键说话模式）
+1. **按下**可配置的键盘快捷键：按住开始录音、松开停止，或者轻按一下开启/关闭录音（也可以只保留"按住"或"轻按切换"模式）
 2. **说话**时保持快捷键激活状态
 3. **松开**后 Handy 使用 Whisper 处理你的语音
 4. **获取**转录文本直接粘贴到你正在使用的任何应用中
@@ -42,6 +42,11 @@ Handy 并不追求成为最好的语音转文字应用——它追求的是成�
    - **macOS**：也可以通过 [Homebrew cask](https://formulae.brew.sh/cask/handy) 安装：`brew install --cask handy`
    - **Windows**：也可以通过 [winget](https://github.com/microsoft/winget-pkgs) 安装：`winget install cjpais.Handy` \
      **注意：** Homebrew cask 和 winget 包不是由 Handy 开发者维护的。
+   - **Debian/Ubuntu**：请使用 APT 安装下载的 `.deb`，这样所需依赖会自动装好：
+     ```bash
+     sudo apt install ./Handy_*.deb
+     ```
+     除非依赖已经安装，否则不要使用 `dpkg -i`。如果你已经用过，请运行 `sudo apt --fix-broken install`。
 2. 安装应用程序
 3. 启动 Handy 并授予必要的系统权限（麦克风、无障碍功能）
 4. 在设置中配置你喜欢的键盘快捷键
@@ -51,6 +56,28 @@ Handy 并不追求成为最好的语音转文字应用——它追求的是成�
 
 有关详细的构建说明和平台特定要求，请参阅 [BUILD.md](https://github.com/cjpais/Handy/blob/main/BUILD.md)。
 
+## 赞助商
+
+<div align="center">
+  我们感谢赞助商的支持，使 Handy 成为可能：
+  <br><br>
+  <a href="https://wordcab.com">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/wordcab.png" alt="Wordcab" width="120" height="120">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/epicenter-so/epicenter">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/epicenter.png" alt="Epicenter" width="120" height="120">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://boltai.com?utm_source=handy">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/boltai.jpg" alt="Bolt AI" width="120" height="120">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://cantydigital.com.au/">
+    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/cantydigital.png" alt="Canty Digital" width="120" height="120">
+  </a>
+</div>
+
 ## 集成
 
 <a href="https://www.raycast.com/mattiacolombomc/handy" title="安装 Handy Raycast 扩展"><img src="https://www.raycast.com/mattiacolombomc/handy/install_button@2x.png?v=1.1" height="64" style="height: 64px;" alt="安装 Handy Raycast 扩展" /></a>
@@ -58,20 +85,6 @@ Handy 并不追求成为最好的语音转文字应用——它追求的是成�
 通过 [Raycast](https://www.raycast.com) 控制 Handy — 开始/停止录音、浏览转录历史、管理词典、切换模型和语言。
 
 [源代码](https://github.com/mattiacolombomc/raycast-handy) · 作者 [@mattiacolombomc](https://github.com/mattiacolombomc)
-
-## 架构
-
-Handy 是作为 Tauri 应用程序构建的，结合了：
-
-- **前端**：React + TypeScript，使用 Tailwind CSS 构建设置界面
-- **后端**：Rust，用于系统集成、音频处理和机器学习推理
-- **核心库**：
-  - `whisper-rs`：使用 Whisper 模型的本地语音识别
-  - `transcription-rs`：使用 Parakeet 模型的 CPU 优化语音识别
-  - `cpal`：跨平台音频 I/O
-  - `vad-rs`：语音活动检测
-  - `rdev`：全局键盘快捷键和系统事件
-  - `rubato`：音频重采样
 
 ### 调试模式
 
@@ -82,9 +95,9 @@ Handy 包含高级调试模式，用于开发和故障排除。通过以下方�
 
 ### 命令行参数
 
-Handy 支持命令行参数来控制正在运行的实例和自定义启动行为。这些在所有平台（macOS、Windows、Linux）上都可用。
+Handy 支持命令行参数来控制正在运行的实例和自定义启动行为。这些在所有平台（macOS、Windows、Linux）上都可用。这在很大程度上仍是一个 Beta 功能。
 
-**远程控制参数**（通过单实例插件发送到已运行的实例）：
+**远程控制参数**（通过单实例插件发送到已运行的实例；如果 Handy 没有运行，切换类参数会启动它并开始录音）：
 
 ```bash
 handy --toggle-transcription    # 切换录音开关
@@ -113,28 +126,54 @@ handy --start-hidden --no-tray
 > /Applications/Handy.app/Contents/MacOS/Handy --toggle-transcription
 > ```
 
+### 转录钩子
+
+macOS 和 Linux 的高级用户可以在 Handy 粘贴之前重写文本。将可执行文件放到 Handy 应用数据目录下的 `hooks/transcription`（macOS 为 `~/Library/Application Support/com.pais.handy/`，Linux 为 `~/.local/share/com.pais.handy/`）。经过 LLM 后处理之后，Handy 会把文本写入该脚本的标准输入，并粘贴它的标准输出。输出末尾的一个换行会被移除，输出为空则不粘贴任何内容。如果钩子执行失败或运行超过 30 秒，将粘贴原始文本。
+
+钩子不会获得你 shell 的 `PATH`：在 macOS 上，从 Dock 或 Finder 启动的 Handy 只能看到 `/usr/bin:/bin:/usr/sbin:/sbin`。其他路径请使用绝对路径，例如 `/opt/homebrew/bin/opencc`。
+
+示例：当 Terminal 是前台应用时，在文本前加上 `#`（macOS）：
+
+```bash
+mkdir -p ~/Library/Application\ Support/com.pais.handy/hooks
+cd ~/Library/Application\ Support/com.pais.handy/hooks
+cat > transcription << 'EOF'
+#!/bin/bash
+app=$(osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true')
+if [ "$app" = "Terminal" ]; then echo "# $(cat)"; else cat; fi
+EOF
+chmod +x transcription
+```
+
 ## 已知问题和当前限制
 
 该项目正在积极开发中，存在一些 [已知问题](https://github.com/cjpais/Handy/issues)。我们相信对当前状态保持透明是很重要的：
 
-### 主要问题（寻求帮助）
+### 蓝牙耳机麦克风（macOS）
 
-**Whisper 模型崩溃：**
+在 macOS 上使用蓝牙耳机麦克风时，录音期间播放质量或音量可能会暂时下降，因为蓝牙会切换到双向音频。请将耳机保持为输出设备，并在 Handy 中选择 Mac 内置麦克风或外接麦克风，以避免这个问题。
 
-- Whisper 模型在某些系统配置（Windows 和 Linux）上会崩溃
-- 并非影响所有系统 - 问题是配置相关的
-  - 如果你遇到崩溃且是开发者，请帮助修复并提供调试日志！
+### fn 与 Globe 键快捷键（macOS）
 
-**Wayland 支持（Linux）：**
+包含 `fn`（Globe）键的快捷键**仅在 Apple 键盘上有效** —— 即 Mac 内置键盘或 Apple 外接键盘。在第三方键盘上它们永远不会触发，即使该键盘连接的是同一台 Mac。
 
-- 对 Wayland 显示服务器支持有限
-- 需要 [`wtype`](https://github.com/atx/wtype) 或 [`dotool`](https://sr.ht/~geb/dotool/) 才能正确输入文本（请参阅下面的 [Linux 注意事项](#linux-注意事项) 了解安装方法）
+这是硬件限制，而不是 Handy 的缺陷。`fn` 不属于标准 USB HID 键盘规范的一部分：Apple 通过一种厂商特定的用途来报告它，macOS 只对 Apple 设备作出响应；而第三方键盘完全在固件中处理其 `Fn` 键，不会向电脑发送任何事件。没有任何事件可供 Handy 监听。
+
+如果你在 MacBook 键盘和外接键盘之间切换，请选择由标准修饰键（`ctrl`、`option`、`shift`、`command`）或普通按键组成的快捷键。
+
+### 管理员权限应用（Windows）
+
+Windows 不允许 Handy 粘贴到以管理员身份运行的应用中，因此 Handy 会显示错误，并把转录内容保存在历史记录里。使用 Handy Keys 键盘实现时，当焦点位于管理员应用上，快捷键同样不会生效。这是预期行为。若要在这些应用中使用 Handy，请也以管理员身份运行 Handy。
 
 ### Linux 注意事项
 
+**粘贴方式：**
+
+在 Linux 上，新安装默认使用 **Shift+Insert** 粘贴（**高级 → 粘贴方式** 中的 **剪贴板 (Shift+Insert)**）。它会同时把转录文本放到剪贴板和主选择区，因此同一个按键既能在 GUI 应用（读取剪贴板）中粘贴，也能在 kitty、Ghostty、Alacritty、GNOME Terminal 等终端（读取主选择区）中粘贴，随后再恢复两者。**直接输入** 仍然可用，但它依赖你的键盘布局：在非美式布局下可能丢失大写字母和带重音符号的字符，或输入错误的字符。
+
 **文本输入工具：**
 
-要在 Linux 上获得可靠的文本输入，请为你的显示服务器安装适当的工具：
+Handy 需要一个工具来发送粘贴按键（或在"直接输入"模式下输入文本）。请为你的显示服务器安装合适的工具：
 
 | 显示服务器 | 推荐工具 | 安装命令                                          |
 | --------- | -------- | ----------------------------------------------- |
@@ -142,11 +181,17 @@ handy --start-hidden --no-tray
 | Wayland   | `wtype`  | `sudo apt install wtype`                        |
 | 两者皆可   | `dotool` | `sudo apt install dotool`（需要 `input` 组）    |
 
-- **X11**：安装 `xdotool` 用于直接输入和剪贴板粘贴快捷键
-- **Wayland**：安装 `wtype`（首选）或 `dotool` 才能正确输入文本
+- **X11**：安装 `xdotool`，用于直接输入和剪贴板粘贴快捷键
+- **Ubuntu 26.04**：默认使用 Wayland 显示服务器。`wtype` 无法工作，需要安装 `ydotool` 并按 [此处](https://github.com/cjpais/Handy/pull/557#issuecomment-3781249267) 的说明配置 systemd。
+- **Wayland**：安装 `wtype`（首选）或 `dotool`，文本输入才能正常工作
 - **dotool 设置**：需要将你的用户添加到 `input` 组：`sudo usermod -aG input $USER`（然后注销并重新登录）
 
 如果没有这些工具，Handy 会回退到 enigo，可能会有有限的兼容性，尤其是在 Wayland 上。
+
+**Wayland 支持（Linux）：**
+
+- 对 Wayland 显示服务器支持有限
+- 需要 [`wtype`](https://github.com/atx/wtype) 或 [`dotool`](https://sr.ht/~geb/dotool/) 才能正确输入文本（安装方法请参阅下面的 [Linux 注意事项](#linux-注意事项)）
 
 **其他注意事项：**
 
@@ -162,7 +207,8 @@ handy --start-hidden --no-tray
   - 在 Ubuntu/Debian 上从源代码构建时，你可能还需要 `libgtk-layer-shell-dev`。
 
 - 在 Linux 上录音叠加层默认是禁用的（`Overlay Position: None`），因为某些合成器会将其视为活动窗口。当叠加层可见时可能会窃取焦点，这会阻止 Handy 粘贴回触发转录的应用程序。如果你仍然启用叠加层，请注意基于剪贴板的粘贴可能会失败或粘贴到错误的窗口。
-- 如果你在使用应用时遇到问题，使用环境变量 `WEBKIT_DISABLE_DMABUF_RENDERER=1` 可能会有帮助
+- Handy 会根据所链接的 WebKitGTK 版本选择 Linux 上的 WebKit 渲染器：2.54 及更新版本让合成器保持在共享内存上（`WEBKIT_DMABUF_RENDERER_FORCE_SHM=1`），更早的版本则禁用 DMA-BUF 渲染（`WEBKIT_DISABLE_DMABUF_RENDERER=1`）。显式设置其中任一变量都会被保留。有关渲染方面的变通方法，请参阅 [故障排除 → Linux 启动崩溃或不稳定](#linux-启动崩溃或不稳定)。
+- 如果 Handy 在 Linux 上无法稳定启动，请参阅 [故障排除 → Linux 启动崩溃或不稳定](#linux-启动崩溃或不稳定)。
 - **全局键盘快捷键（Wayland）：** 在 Wayland 上，系统级快捷键必须通过桌面环境或窗口管理器配置。使用 [CLI 参数](#命令行参数) 作为自定义快捷键的命令。
 
   **GNOME：**
@@ -195,77 +241,77 @@ handy --start-hidden --no-tray
   bind = $mainMod, O, exec, handy --toggle-transcription
   ```
 
-- 你也可以通过 Unix 信号在 Handy 外部管理全局快捷键，这让 Wayland 窗口管理器或其他快捷键守护进程保留快捷键绑定：
+- 你也可以通过 Unix 信号或 CLI 参数从 Handy 外部触发转录，这让 Wayland 窗口管理器或其他快捷键守护进程继续拥有快捷键绑定：
 
-  | 信号       | 操作                              | 示例                    |
-  | --------- | --------------------------------- | ---------------------- |
-  | `SIGUSR2` | 切换转录                          | `pkill -USR2 -n handy` |
-  | `SIGUSR1` | 切换带后处理的转录                | `pkill -USR1 -n handy` |
+  | 操作                       | 触发方式                                                  |
+  | ------------------------- | ------------------------------------------------------- |
+  | 切换转录                   | `pkill -USR2 -n handy` 或 `handy --toggle-transcription` |
+  | 切换带后处理的转录          | `handy --toggle-post-process`                             |
 
   Sway 配置示例：
 
   ```ini
   bindsym $mod+o exec pkill -USR2 -n handy
-  bindsym $mod+p exec pkill -USR1 -n handy
+  bindsym $mod+p exec handy --toggle-post-process
   ```
 
   这里的 `pkill` 只是发送信号——它不会终止进程。
 
-### 平台支持
+  > **行为变更：** 旧版本还接受 `SIGUSR1` 来切换带后处理的转录。WebKitGTK —— Linux 上 Handy 内嵌的 webview 引擎 —— 内部使用 SIGUSR1 协调 JavaScript 垃圾回收，因此监听它会导致莫名其妙的录音，以及每隔几分钟被中断的听写（[#1660](https://github.com/cjpais/Handy/issues/1660)）。Handy 在 Linux 上不再监听 SIGUSR1；带后处理的切换仍可通过 `handy --toggle-post-process` 使用。**请移除任何 `pkill -USR1` 绑定**：该信号现在会直接送达 WebKit 的内部处理器，可能导致应用崩溃。
 
-- **macOS（Intel 和 Apple Silicon 均支持）**
-- **x64 Windows**
-- **x64 Linux**
+**叠加层与粘贴问题（Linux）：**
 
-### 系统要求/建议
+- 录音叠加层窗口可能会干扰在 Linux（X11）上向目标应用粘贴转录文本
+- **解决方法：** 打开 **设置 > 高级**，将 **"Overlay Position"** 设置为 **"None"** 以禁用叠加层
+- 如果你仍希望有录音状态的听觉确认，请启用 **"音频反馈"**（同样在"高级"中）
+- 从旧版本升级或从其他平台导入设置的用户可能需要手动应用此更改
 
-以下是运行 Handy 的推荐配置。如果你达不到系统要求，应用程序的性能可能会下降。我们正在努力在各种计算机和硬件上改进性能。
+## 验证发布签名
 
-**对于 Whisper 模型：**
+Handy 的发布产物使用 Tauri 的更新器签名格式签名。公钥保存在 [`src-tauri/tauri.conf.json`](https://github.com/cjpais/Handy/blob/main/src-tauri/tauri.conf.json) 的 `plugins.updater.pubkey` 下。
 
-- **macOS**：M 系列 Mac、Intel Mac
-- **Windows**：Intel、AMD 或 NVIDIA GPU
-- **Linux**：Intel、AMD 或 NVIDIA GPU
-  - Ubuntu 22.04、24.04
+要手动验证某个发布版本，请将 `ARTIFACT` 设置为你下载的文件名，把 `src-tauri/tauri.conf.json` 中的 `pubkey` 值保存为 `handy.pub.b64`，然后从 base64 解码公钥和对应的 `.sig` 文件，并用 `minisign` 验证该产物：
 
-**对于 Parakeet V3 模型：**
+```bash
+# 替换为你下载的文件
+ARTIFACT="Handy_0.8.1_amd64.AppImage"
 
-- **仅 CPU 运行** - 可在各种硬件上运行
-- **最低要求**：Intel Skylake（第 6 代）或同等水平的 AMD 处理器
-- **性能**：在中端硬件上约为 5 倍实时速度（已在 i5 上测试）
-- **自动语言检测** - 无需手动选择语言
+python3 - "$ARTIFACT" <<'PY'
+import base64, pathlib, sys
 
-## 路线图与积极开发
+artifact = sys.argv[1]
 
-我们正在积极开发多个功能和改进。欢迎贡献和反馈！
+pub = pathlib.Path("handy.pub.b64").read_text().strip()
+pathlib.Path("handy.pub").write_bytes(base64.b64decode(pub))
 
-### 正在进行中
+sig = pathlib.Path(f"{artifact}.sig").read_text().strip()
+pathlib.Path(f"{artifact}.minisig").write_bytes(base64.b64decode(sig))
+PY
 
-**调试日志：**
+minisign -Vm "$ARTIFACT" \
+  -p handy.pub \
+  -x "$ARTIFACT.minisig"
+```
 
-- 添加文件调试日志以帮助诊断问题
+验证成功时，`minisign` 会输出：
 
-**macOS 键盘改进：**
+```text
+Signature and comment signature verified
+```
 
-- 支持 Globe 键作为转录触发器
-- 重写 macOS 的全局快捷键处理，可能也会重写其他操作系统。
-
-**可选分析：**
-
-- 收集匿名使用数据以帮助改进 Handy
-- 隐私优先方法，清晰的选择加入
-
-**设置重构：**
-
-- 清理和重构变得越来越臃肿和混乱的设置系统
-- 为设置管理实现更好的抽象
-
-**Tauri 命令清理：**
-
-- 抽象和组织 Tauri 命令模式
-- 探索 tauri-specta 以改进类型安全和组织
+不要用 `gpg` 处理这些 `.sig` 文件。
 
 ## 故障排除
+
+### 上一条剪贴板内容被粘贴，而不是转录结果
+
+如果 **历史记录** 中的转录是正确的，但 Handy 插入的却是你之前复制的内容，请参阅 [issue #502](https://github.com/cjpais/Handy/issues/502)。在标准剪贴板粘贴方式下，Handy 会在固定延迟后恢复你之前的剪贴板。在高负载时，接收应用可能要到这次恢复之后才读取剪贴板。
+
+1. 打开 Handy 的设置窗口，按 `Cmd+Shift+D`（macOS）或 `Ctrl+Shift+D`（Windows/Linux）显示 **调试**。
+2. 在 **macOS 和 Windows** 上，选择一种剪贴板粘贴方式后，在调试中尝试 **可靠粘贴（Beta）**（Reliable Paste）。它使用剪贴板读取通知来延迟恢复，而不是依赖标准的固定延迟。请在实际出现问题的应用中测试；它仍处于实验阶段。
+3. 如果"可靠粘贴"不可用或被禁用，请增大调试中的 **粘贴延迟（之后）**（Paste Delay (After)）并再次测试。它控制恢复之前剪贴板内容前的等待时间。**粘贴延迟（之前）**（Paste Delay (Before)）控制发送粘贴按键前的等待时间，解决的是操作中的另一个环节。这些延迟设置仅适用于标准粘贴路径，不适用于"可靠粘贴"。
+
+如果问题仍然存在，请在现有 issue 中补充你的 Handy 版本、操作系统、接收应用、粘贴方式、"可靠粘贴"设置以及前后延迟。分享日志前请隐去私密的听写文本。
 
 ### 手动模型安装（适用于代理用户或网络限制）
 
@@ -308,10 +354,9 @@ New-Item -ItemType Directory -Force -Path "$env:APPDATA\com.pais.handy\models"
 - Turbo（1600 MB）：`https://blob.handy.computer/ggml-large-v3-turbo.bin`
 - Large（1100 MB）：`https://blob.handy.computer/ggml-large-v3-q5_0.bin`
 
-**Parakeet 模型（压缩归档）：**
+**Parakeet Unified EN 0.6B（单个 `.gguf` 文件，推荐）：**
 
-- V2（473 MB）：`https://blob.handy.computer/parakeet-v2-int8.tar.gz`
-- V3（478 MB）：`https://blob.handy.computer/parakeet-v3-int8.tar.gz`
+- Q8_0（731 MB）：`https://huggingface.co/handy-computer/parakeet-unified-en-0.6b-gguf/resolve/main/parakeet-unified-en-0.6b-Q8_0.gguf`
 
 #### 第四步：安装模型
 
@@ -327,30 +372,13 @@ New-Item -ItemType Directory -Force -Path "$env:APPDATA\com.pais.handy\models"
 └── ggml-large-v3-q5_0.bin
 ```
 
-**对于 Parakeet 模型（.tar.gz 归档）：**
+**对于 GGUF 模型（.gguf 文件）：**
 
-1. 解压 `.tar.gz` 文件
-2. 将**解压后的目录**放入 `models` 文件夹
-3. 目录必须命名为以下确切的名称：
-   - **Parakeet V2**：`parakeet-tdt-0.6b-v2-int8`
-   - **Parakeet V3**：`parakeet-tdt-0.6b-v3-int8`
-
-最终结构应如下：
-
-```
-{app_data_dir}/models/
-├── parakeet-tdt-0.6b-v2-int8/     （包含模型文件的目录）
-│   ├── （模型文件）
-│   └── （配置文件）
-└── parakeet-tdt-0.6b-v3-int8/     （包含模型文件的目录）
-    ├── （模型文件）
-    └── （配置文件）
-```
+将 `.gguf` 文件直接放入 `models` 目录，与上面的 Whisper `.bin` 文件完全一样。Handy 也会识别共享的 Hugging Face 缓存（`~/.cache/huggingface/hub`）中已有的模型，因此其他工具下载的副本无需移动即可使用。
 
 **重要说明：**
 
-- 对于 Parakeet 模型，解压后的目录名称**必须**与上面显示的完全匹配
-- 不要重命名 Whisper 模型的 `.bin` 文件——使用下载 URL 中的确切文件名
+- 不要重命名 `.bin` 或 `.gguf` 文件——使用下载 URL 中的确切文件名
 - 放置文件后，重启 Handy 以检测新模型
 
 #### 第五步：验证安装
@@ -377,6 +405,102 @@ Handy 可以自动发现放置在 `models` 目录中的自定义 Whisper GGML �
 - 模型必须是有效的 Whisper GGML 格式（`.bin` 文件）
 - 模型名称从文件名派生（例如 `my-custom-model.bin` → "My Custom Model"）
 
+### Linux 启动崩溃或不稳定
+
+如果 Handy 在 Linux 上无法稳定启动——例如启动后很快崩溃、始终不显示窗口，或报告 Wayland 协议错误——请按顺序尝试以下步骤。
+
+**1. 安装（或重新安装）`gtk-layer-shell`**
+
+Handy 使用 `gtk-layer-shell` 绘制录音叠加层，并在运行时链接它。缺失或损坏的安装是启动失败最常见的原因，可能表现为崩溃，或在显示任何窗口之前就挂起。请确认已为你的发行版安装运行时包：
+
+| 发行版         | 需安装的包           | 示例命令                            |
+| ------------- | -------------------- | ---------------------------------- |
+| Ubuntu/Debian | `libgtk-layer-shell0` | `sudo apt install libgtk-layer-shell0` |
+| Fedora/RHEL   | `gtk-layer-shell`     | `sudo dnf install gtk-layer-shell`     |
+| Arch Linux    | `gtk-layer-shell`     | `sudo pacman -S gtk-layer-shell`       |
+
+如果已经安装但仍然出现启动问题，请尝试重新安装（例如再次执行 `sudo pacman -S gtk-layer-shell`），以防部分升级损坏了库文件。
+
+**2. 禁用 GTK layer shell 叠加层（`HANDY_NO_GTK_LAYER_SHELL`）**
+
+如果安装库没有帮助，可以完全跳过 `gtk-layer-shell` 的初始化作为变通方法。在某些合成器（尤其是 Wayland 下的 KDE Plasma）上，曾报告它与录音叠加层配合不佳。设置此变量后，叠加层会回退为普通的置顶窗口：
+
+```bash
+HANDY_NO_GTK_LAYER_SHELL=1 handy
+```
+
+**3. 配置 WebKit 渲染器（`WEBKIT_DISABLE_DMABUF_RENDERER` / `WEBKIT_DMABUF_RENDERER_FORCE_SHM`）**
+
+Handy 在启动时根据所链接的 WebKitGTK 构建选择渲染器，因为 DMA-BUF 渲染器在某些 GPU/驱动组合上会崩溃，而非合成回退在 2.54 系列上会丢失像素：
+
+- **WebKitGTK 2.54 及更新版本：** 保持合成器启用，并用 `WEBKIT_DMABUF_RENDERER_FORCE_SHM=1` 强制其使用共享内存。2.54 只合成每一帧的损坏区域，因此之前的变通方法（`WEBKIT_DISABLE_DMABUF_RENDERER=1`）会让透明窗口（例如录音叠加层）只显示有动画的部分（[#2166](https://github.com/cjpais/Handy/issues/2166)）。
+- **更早的版本：** 用 `WEBKIT_DISABLE_DMABUF_RENDERER=1` 禁用 DMA-BUF 渲染，这可能导致空白窗口，但与之前的行为一致。
+
+显式设置的环境变量值会被保留，包括在 Nix 包中：
+
+```bash
+# 强制使用旧的非合成渲染器（2.54 上可能重新出现部分帧）
+WEBKIT_DISABLE_DMABUF_RENDERER=1 handy
+
+# 让合成器保持在共享内存上（下面 2.54 的默认行为）
+WEBKIT_DMABUF_RENDERER_FORCE_SHM=1 handy
+
+# 在支持时允许 WebKit 使用 DMA-BUF（可能重新引入 GPU/驱动崩溃）
+WEBKIT_DISABLE_DMABUF_RENDERER=0 handy
+```
+
+测试某个值之前，请完全退出 Handy，包括托盘中的实例。用 `--toggle-transcription` 运行第二个实例不会改变正在运行的进程的环境变量。
+
+**让变通方法永久生效**
+
+请在实际启动 Handy 的启动器环境中设置该变量。shell 配置文件中的导出可能不会应用于桌面菜单或自动启动的启动方式。如果你通过 `.desktop` 文件启动 Handy，可以在 `Exec=` 行前加前缀，例如：
+
+```ini
+Exec=env HANDY_NO_GTK_LAYER_SHELL=1 handy
+```
+
+Handy 内置的自动启动会重写它生成的桌面条目，因此编辑该条目并不是持久的变通方法。对于自动启动，请使用合适的会话/服务环境，或禁用 Handy 内置的自动启动，并用自己的启动条目配合所需变量进行管理。
+
+如果某个变通方法对你有效，请 [提交 issue](https://github.com/cjpais/Handy/issues) 说明你的发行版、桌面环境和会话类型——这些信息有助于我们定位底层缺陷。
+
+### Hyprland / Omarchy 上的空白录音叠加层
+
+如果录音叠加层是空白或只有边框，请完全退出 Handy，并在启用 Wayland 的情况下启动
+[原生安装](https://github.com/cjpais/Handy/blob/main/BUILD.md#linux-install-from-source)：
+
+```bash
+env -u HANDY_NO_GTK_LAYER_SHELL GDK_BACKEND=wayland handy
+```
+
+如果这样可行，请只对 Handy 的启动器应用 `GDK_BACKEND=wayland`。
+
+AppImage 会在你的环境之后于启动脚本中强制 `GDK_BACKEND=x11`，因此
+`GDK_BACKEND=wayland ./Handy.AppImage` 不会生效。请改用 `HANDY_GDK_BACKEND`；Handy 会在 GTK 启动前把它复制到 `GDK_BACKEND`：
+
+```bash
+HANDY_GDK_BACKEND=wayland ./Handy_x.y.z_amd64.AppImage
+```
+
+对于启动器，请把该变量写入 `.desktop` 条目，例如
+`Exec=env HANDY_GDK_BACKEND=wayland /path/to/Handy_x.y.z_amd64.AppImage`。
+
+如果 AppImage 出现语言下拉框冻结、关闭到托盘后重新启动时黑屏（[#1729](https://github.com/cjpais/Handy/issues/1729)），或在 Niri 等没有 XWayland 的纯 Wayland 合成器上以
+`Failed to initialize gtk backend` 退出（[#2034](https://github.com/cjpais/Handy/issues/2034)），请尝试原生 Wayland。由于
+[tauri#8541](https://github.com/tauri-apps/tauri/issues/8541)，AppImage 默认使用 X11，所以这需要手动开启。
+
+### Windows 上的 Vulkan 叠加层与捕获工具（`HANDY_KEEP_VULKAN_IMPLICIT_LAYERS`）
+
+在 Windows 上，Handy 会让 Vulkan 加载器跳过隐式层，以避免叠加层和捕获钩子导致的崩溃（[#2049](https://github.com/cjpais/Handy/issues/2049)）。GPU 加速仍然启用；这不会更改系统级设置。
+
+如果为了 GPU 选择或调试工具需要关闭此行为，请完全退出 Handy（包括托盘图标），然后在同一个 PowerShell 窗口中运行两条命令：
+
+```powershell
+$env:HANDY_KEEP_VULKAN_IMPLICIT_LAYERS = "1"
+& "$env:ProgramFiles\Handy\handy.exe"
+```
+
+如有需要，请调整可执行文件路径。此覆盖仅对该 PowerShell 会话中启动的应用生效，不适用于开始菜单。Handy 也会保留任何已存在的 `VK_LOADER_LAYERS_DISABLE` 值。
+
 ### 如何贡献
 
 1. **检查现有问题** [github.com/cjpais/Handy/issues](https://github.com/cjpais/Handy/issues)
@@ -387,24 +511,6 @@ Handy 可以自动发现放置在 `models` 目录中的自定义 Whisper GGML �
 
 目标是创建一个有用的工具和供他人构建的基础——一个模式良好、简单易懂的代码库，为社区服务。
 
-## 赞助商
-
-<div align="center">
-  我们感谢赞助商的支持，使 Handy 成为可能：
-  <br><br>
-  <a href="https://wordcab.com">
-    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/wordcab.png" alt="Wordcab" width="120" height="120">
-  </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://github.com/epicenter-so/epicenter">
-    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/epicenter.png" alt="Epicenter" width="120" height="120">
-  </a>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://boltai.com?utm_source=handy">
-    <img src="https://github.com/cjpais/Handy/blob/main/sponsor-images/boltai.jpg" alt="Bolt AI" width="120" height="120">
-  </a>
-</div>
-
 ## 相关项目
 
 - **[Handy CLI](https://github.com/cjpais/handy-cli)** - 最初的 Python 命令行版本
@@ -414,10 +520,12 @@ Handy 可以自动发现放置在 `models` 目录中的自定义 Whisper GGML �
 
 MIT 许可证 - 详见 [LICENSE](https://github.com/cjpais/Handy/blob/main/LICENSE) 文件。
 
+Handy 是开源软件，但 Handy 的名称、徽标、图标和品牌资源并非开源。非官方分支、重写和再分发必须使用自己的品牌，且不得暗示获得认可或存在关联。
+
 ## 致谢
 
 - **OpenAI 的 Whisper** 语音识别模型
-- **whisper.cpp 和 ggml** 出色的跨平台 whisper 推理/加速
+- **ggml** 出色的跨平台张量库
 - **Silero** 优秀的轻量级 VAD
 - **Tauri** 团队出色的基于 Rust 的应用框架
 - **社区贡献者** 帮助让 Handy 变得更好

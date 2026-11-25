@@ -194,7 +194,7 @@
                     <div class="step-number">1</div>
                     <div class="step-content">
                         <h3>按下快捷键</h3>
-                        <p>按下可配置的键盘快捷键开始录音（或使用按键说话模式）</p>
+                        <p>按下可配置的键盘快捷键开始录音：按住说话、松开停止，或轻按一下开启/关闭录音</p>
                     </div>
                 </div>
                 <div class="step-connector"></div>
@@ -286,7 +286,8 @@
                         <a href="https://github.com/cjpais/Handy/releases" class="btn btn-primary" target="_blank">
                             下载安装包
                         </a>
-                        <span class="install-note">详见安装文档</span>
+                        <code class="install-cmd">sudo apt install ./Handy_*.deb</code>
+                        <span class="install-note">Debian/Ubuntu 请用 apt 安装 .deb，依赖会自动补齐</span>
                     </div>
                 </div>
             </div>
@@ -375,6 +376,10 @@
                             <span>静默启动</span>
                         </div>
                         <div class="command-item">
+                            <code>handy --toggle-post-process</code>
+                            <span>切换带后处理的录音</span>
+                        </div>
+                        <div class="command-item">
                             <code>handy --debug</code>
                             <span>调试模式</span>
                         </div>
@@ -402,18 +407,33 @@
             <div class="faq-grid">
                 <div class="faq-item">
                     <h3>手动安装模型</h3>
-                    <p>如果你在代理或受限网络环境中，可以手动下载和安装模型文件。支持 Whisper 和 Parakeet 模型。</p>
-                    <a href="https://github.com/cjpais/Handy#%E6%89%8B%E5%8A%A8%E6%A8%A1%E5%9E%8B%E5%AE%89%E8%A3%85" class="link" target="_blank">查看详细步骤 →</a>
+                    <p>如果你在代理或受限网络环境中，可以手动下载和安装模型文件。支持 Whisper 的 .bin 模型和 Parakeet Unified EN 的 .gguf 模型。</p>
+                    <a href="https://github.com/bbylw/Handy-CN#手动模型安装适用于代理用户或网络限制" class="link" target="_blank">查看详细步骤 →</a>
                 </div>
                 <div class="faq-item">
                     <h3>Linux 注意事项</h3>
-                    <p>Wayland 用户需要安装 wtype 或 dotool 才能正确输入文本。X11 用户建议安装 xdotool。</p>
-                    <a href="https://github.com/cjpais/Handy#linux-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9" class="link" target="_blank">了解更多 →</a>
+                    <p>新安装默认使用 Shift+Insert 粘贴。Wayland 用户需要安装 wtype 或 dotool，X11 用户建议安装 xdotool。</p>
+                    <a href="https://github.com/bbylw/Handy-CN#linux-注意事项" class="link" target="_blank">了解更多 →</a>
                 </div>
                 <div class="faq-item">
                     <h3>自定义 Whisper 模型</h3>
                     <p>Handy 可以自动发现放置在 models 目录中的自定义 Whisper GGML 模型，支持社区微调模型。</p>
-                    <a href="https://github.com/cjpais/Handy#%E8%87%AA%E5%AE%9A%E4%B9%89-whisper-%E6%A8%A1%E5%9E%8B" class="link" target="_blank">查看方法 →</a>
+                    <a href="https://github.com/bbylw/Handy-CN#自定义-whisper-模型" class="link" target="_blank">查看方法 →</a>
+                </div>
+                <div class="faq-item">
+                    <h3>转录钩子</h3>
+                    <p>在 macOS 和 Linux 上，可以用脚本在粘贴前重写转录文本，例如自动加上前缀或做格式转换。</p>
+                    <a href="https://github.com/bbylw/Handy-CN#转录钩子" class="link" target="_blank">查看用法 →</a>
+                </div>
+                <div class="faq-item">
+                    <h3>粘贴了旧的剪贴板内容</h3>
+                    <p>在调试菜单中开启"可靠粘贴（Beta）"，或增大"粘贴延迟（之后）"，让 Handy 等接收应用读完剪贴板再恢复。</p>
+                    <a href="https://github.com/bbylw/Handy-CN#上一条剪贴板内容被粘贴而不是转录结果" class="link" target="_blank">排查方法 →</a>
+                </div>
+                <div class="faq-item">
+                    <h3>Linux 启动崩溃或不稳定</h3>
+                    <p>先检查 gtk-layer-shell 是否安装，再尝试 HANDY_NO_GTK_LAYER_SHELL=1 或配置 WebKit 渲染器。</p>
+                    <a href="https://github.com/bbylw/Handy-CN#linux-启动崩溃或不稳定" class="link" target="_blank">查看步骤 →</a>
                 </div>
             </div>
         </div>
@@ -492,7 +512,7 @@
             </div>
             <div class="footer-bottom">
                 <p>本文档为 <a href="https://github.com/cjpais/Handy" target="_blank">Handy</a> 项目的中文翻译版本</p>
-                <p>&copy; 2024 Handy. 基于 MIT 许可证开源。</p>
+                <p>&copy; 2026 Handy. 基于 MIT 许可证开源。</p>
             </div>
         </div>
     </footer>
