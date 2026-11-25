@@ -38,8 +38,12 @@ export function homeOptions(): BaseLayoutProps {
   return {
     ...baseOptions(),
     links: [
-      { text: '文档', url: '/docs', active: 'nested-url' },
+      { text: '功能特性', url: '/#features' },
+      { text: '工作原理', url: '/#how-it-works' },
+      { text: '模型', url: '/#models' },
       { text: '下载', url: '/#download' },
+      { text: '常见问题', url: '/#faq' },
+      { text: '文档', url: '/docs', active: 'nested-url' },
     ],
   };
 }

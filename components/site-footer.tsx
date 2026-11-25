@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 type FooterLink = { label: string; href: string; external?: boolean };
-type FooterGroup = { title: string; links: FooterLink[] };
+type FooterGroup = { title: string; wide?: boolean; links: FooterLink[] };
 
 const groups: FooterGroup[] = [
   {
@@ -24,6 +24,7 @@ const groups: FooterGroup[] = [
   },
   {
     title: '社区',
+    wide: true,
     links: [
       { label: 'GitHub', href: 'https://github.com/cjpais/Handy', external: true },
       { label: 'Discord', href: 'https://discord.com/invite/WVBeWsNXK4', external: true },
@@ -36,9 +37,9 @@ const groups: FooterGroup[] = [
 export function SiteFooter() {
   return (
     <footer className="border-t bg-fd-card/40">
-      <div className="mx-auto w-full max-w-6xl px-6 py-14">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-          <div>
+      <div className="mx-auto w-full max-w-6xl px-6 py-12 md:py-14">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-[1.5fr_repeat(3,1fr)] md:gap-10">
+          <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 text-lg font-semibold">
               <svg
                 viewBox="0 0 24 24"
@@ -60,10 +61,17 @@ export function SiteFooter() {
               免费、开源、可扩展的离线语音转文字应用。声音留在你的电脑上，不经过云端。
             </p>
           </div>
+
           {groups.map((group) => (
-            <div key={group.title}>
+            <div key={group.title} className={group.wide ? 'col-span-2 md:col-span-1' : undefined}>
               <h3 className="text-sm font-medium">{group.title}</h3>
-              <ul className="mt-3 space-y-2">
+              <ul
+                className={
+                  group.wide
+                    ? 'mt-3 flex flex-wrap gap-x-5 gap-y-2 md:block md:space-y-2'
+                    : 'mt-3 space-y-2'
+                }
+              >
                 {group.links.map((link) => (
                   <li key={link.label}>
                     {link.external ? (
@@ -89,7 +97,8 @@ export function SiteFooter() {
             </div>
           ))}
         </div>
-        <div className="mt-12 border-t pt-6 text-sm text-fd-muted-foreground md:text-right">
+
+        <div className="mt-10 border-t pt-6 text-center text-xs text-fd-muted-foreground md:text-right md:text-sm">
           <p>© 2026 Handy · MIT 许可证</p>
         </div>
       </div>
