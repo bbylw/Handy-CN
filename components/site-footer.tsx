@@ -54,7 +54,7 @@ export function SiteFooter() {
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                 <line x1="12" y1="19" x2="12" y2="22" />
               </svg>
-              Handy 中文
+              Handy
             </div>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-fd-muted-foreground">
               免费、开源、可扩展的离线语音转文字应用。声音留在你的电脑上，不经过云端。
@@ -89,8 +89,7 @@ export function SiteFooter() {
             </div>
           ))}
         </div>
-        <div className="mt-12 flex flex-col gap-2 border-t pt-6 text-sm text-fd-muted-foreground md:flex-row md:items-center md:justify-between">
-          <p>本站为 Handy 的中文文档与介绍页，内容译自 handy.computer/docs。</p>
+        <div className="mt-12 border-t pt-6 text-sm text-fd-muted-foreground md:text-right">
           <p>© 2026 Handy · MIT 许可证</p>
         </div>
       </div>

@@ -11,8 +11,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://handy.ndjp.net'),
   title: {
-    default: 'Handy 中文 — 免费开源的离线语音转文字',
-    template: '%s · Handy 中文',
+    default: 'Handy — 免费开源的离线语音转文字',
+    template: '%s · Handy',
   },
   description:
     'Handy 是一款免费、开源、可扩展的离线语音转文字应用。按下快捷键说话，松开即可把文字粘贴到任何应用，全程在本地完成。',
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    siteName: 'Handy 中文',
-    title: 'Handy 中文 — 免费开源的离线语音转文字',
+    siteName: 'Handy',
+    title: 'Handy — 免费开源的离线语音转文字',
     description: '按下快捷键说话，松开即可获得文字。完全本地运行，隐私优先，开源免费。',
   },
 };

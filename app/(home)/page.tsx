@@ -365,7 +365,7 @@ export default function HomePage() {
       {/* Docs */}
       <section id="docs" className="mx-auto w-full max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <p className="text-xs font-medium uppercase tracking-widest text-fd-primary">中文文档</p>
+          <p className="text-xs font-medium uppercase tracking-widest text-fd-primary">文档</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">从安装到调优的完整指南</h2>
           <p className="mt-4 text-fd-muted-foreground">
             文档内容译自 handy.computer/docs，并跟进上游 v0.10.2 的更新。
