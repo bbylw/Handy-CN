@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "index",
+    "linux",
+    "models",
+    "general",
+    "history",
+    "advanced",
+    "paste-methods",
+    "post-processing",
+    "debug",
+    "cli",
+    "troubleshooting",
+    "faq",
+    "about"
+  ]
+}

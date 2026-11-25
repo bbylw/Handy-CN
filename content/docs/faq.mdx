@@ -1,0 +1,202 @@
+---
+title: 常见问题
+description: 关于 Handy 的常见疑问，按主题整理。
+---
+
+## 通用
+
+**Q：macOS 登录项里的「Christopher Pais」是什么？**
+
+那是开发者的名字（CJ Pais）。Handy 使用个人 Apple 开发者账号签名，所以 macOS 在「登录项与扩展」中显示开发者姓名而不是「Handy」。这只是显示问题，属于正常现象。
+
+**Q：签署 Windows 更新的「YNYNG LLC」是什么？**
+
+YNYNG LLC 是开发者用于 Windows 代码签名的商业实体。由 YNYNG LLC 签名的更新是合法的 Handy 更新。
+
+**Q：Handy 会把数据发送到云端吗？**
+
+不会。所有语音转文字都在你的设备本地完成。仅有的网络请求用于下载模型和检查更新。如果你启用后处理并使用云端 AI 服务商，转录内容会发送给该服务商的 API。
+
+**Q：Handy 能转录系统音频吗（视频会议、YouTube 等）？**
+
+目前不能。Handy 只转录麦克风输入。
+
+**Q：Handy 支持实时字幕吗？**
+
+还不支持。Handy 先录制一段，再转录这一段。实时流式转录是计划中的功能。
+
+**Q：Handy 的数据存在哪里？**
+
+完整路径列表见[调试 > 应用数据目录](/docs/debug#应用数据目录)，也可以在设置的「关于」页面查看。
+
+**Q：如何验证发布签名？**
+
+Handy 的发布产物使用 Tauri 的更新器签名格式。
+
+要手动验证下载的产物，请解码 [`src-tauri/tauri.conf.json`](https://github.com/cjpais/Handy/blob/main/src-tauri/tauri.conf.json) 中的 `pubkey`，先把下载的 `.sig` 文件从 base64 解码，然后用 `minisign` 验证该产物。
+
+完整步骤见主仓库：https://github.com/cjpais/Handy#verify-release-signatures
+
+**Q：Handy 能随系统启动吗？**
+
+可以。在 **设置 > 高级** 中启用 **开机启动**，也可以同时启用 **隐藏启动** 让它直接启动到系统托盘。见[高级](/docs/advanced#开机启动)。
+
+**Q：如何修改界面语言？**
+
+Handy 支持 18 种以上语言（英语、西班牙语、法语、德语、日语、中文、韩语、阿拉伯语、土耳其语、捷克语、葡萄牙语、乌克兰语、俄语、意大利语、波兰语、越南语等，并支持从右到左布局）。在「关于」页面修改。
+
+---
+
+## 模型与转录
+
+**Q：英文应该用哪个模型？**
+
+大多数英文用户推荐 **Parakeet V3**：快、准确，也最稳定。如果需要极致的准确率且硬件够强，可以试 Whisper Medium 或 Large。硬件非常弱时试试 Moonshine。完整列表见[模型](/docs/models)。
+
+**Q：为什么 Parakeet 把数字写成单词而不是数字字符？**
+
+这是 Parakeet 模型本身的行为，它会输出 "one hundred twenty three" 而不是 "123"。如果必须输出数字字符，请改用 Whisper 模型，或者用[后处理](/docs/post-processing)把单词转换成数字。
+
+**Q：选中 Whisper 就崩溃怎么办？**
+
+解决方法见[故障排除 > Whisper 崩溃](/docs/troubleshooting#whisper-崩溃)。
+
+**Q：可以用嘴说 "period"、"comma" 或 "new line" 来插入标点吗？**
+
+不能直接做到。语音识别模型本身不支持语音指令标点。你可以用[后处理](/docs/post-processing)配合自定义提示词把口头标点转换成符号，用户在 [Discussion #715](https://github.com/cjpais/handy/discussions/715) 分享过这类提示词。
+
+**Q：为什么 Parakeet 把我的非英语语音翻译成了英语？**
+
+Parakeet 主要是英语模型。检测到非英语语音时，它可能输出英语甚至乱码。非英语请使用 Whisper、SenseVoice 或 GigaAM，语言支持详见[模型](/docs/models)。
+
+**Q：Whisper 总是在结尾加上「thank you」或「bye bye」**
+
+这是 Whisper 已知的幻觉问题，录音很短或结尾是静音时更明显。Handy 会自动过滤常见的幻觉片段。如果仍然出现，尽量让录音简短，或者改用没有这个问题的 Parakeet。
+
+**Q：我较长的录音（超过 5 分钟）失败或没有输出**
+
+目前的语音识别模型不擅长处理很长的音频。为了最好的效果，请把单次录音控制在 3–5 分钟以内。
+
+**Q：模型下载失败后无法重新下载**
+
+见[故障排除 > 模型下载失败](/docs/troubleshooting#模型下载失败)。
+
+**Q：不用 Handy 时如何释放显存（VRAM）？**
+
+在 **设置 > 高级** 中配置模型卸载超时，也可以右键系统托盘图标选择「卸载模型」。见[高级 > 卸载模型](/docs/advanced#卸载模型)。
+
+**Q：可以加载自定义 Whisper 模型吗？**
+
+可以，这是实验性功能。把 Whisper 兼容的 `.bin` 模型文件放进 models 目录，Handy 就能发现它。详见[模型](/docs/models#自定义模型)。
+
+---
+
+## 粘贴与输出
+
+**Q：有哪些粘贴方式？**
+
+Handy 支持 6 种粘贴方式，各自适用的场景见[粘贴方式](/docs/paste-methods)。
+
+**Q：使用非英语键盘布局（AZERTY、QWERTZ 等）时 Handy 粘贴出乱码**
+
+这通常是因为使用了「直接输入」粘贴方式，请改用基于剪贴板的方式。见[粘贴方式](/docs/paste-methods#非-qwerty-键盘输出乱码)。
+
+**Q：Handy 无法粘贴到终端 / Windows Terminal**
+
+Windows 终端请使用 **Shift+Insert** 粘贴方式，Linux 终端请使用 **Ctrl+Shift+V**。见[粘贴方式](/docs/paste-methods#我应该用哪种)。
+
+**Q：怎么打开调试菜单 / 某个设置在哪里？**
+
+用 `Cmd+Shift+D`（macOS）或 `Ctrl+Shift+D`（Windows/Linux）打开调试菜单。调试设置完整列表见[调试](/docs/debug)。
+
+---
+
+## 键盘快捷键
+
+**Q：可以使用只用修饰键的快捷键吗（例如只按 Ctrl+Shift）？**
+
+可以。在 macOS 上 `Fn`/Globe 键也可以作为修饰键，但有一个关于外接键盘的限制，见下一个问题。
+
+**Q：快捷键在 Mac 内置键盘上有效，在外接键盘上无效**
+
+如果快捷键包含 `Fn`（或 Globe），这是预期行为。`Fn` 不属于标准 USB HID 键盘规范，macOS 只会从 Apple 键盘收到它。第三方键盘完全在自己的固件里处理 `Fn`（用于在媒体键和功能键之间切换顶排），从来不会发给电脑——所以 Handy 没有事件可以响应，快捷键是静默无效而不是报错。
+
+如果你只用 Apple 键盘，`Fn` 快捷键仍然是个好选择。要让同一个快捷键到处都能用，请改用标准修饰键（`Ctrl`、`Option`、`Shift`、`Command`）或普通按键组成快捷键。如果你的快捷键不含 `Fn`，请改看[macOS 上快捷键突然失效（Secure Input）](/docs/troubleshooting#macos-上快捷键突然失效secure-input)。
+
+**Q：叠加层上的 (x) 按钮把我的录音丢掉了！**
+
+(x) 按钮会取消录音并丢弃所有音频，它不会停止并转录。要停止录音并获得转录，请再次按快捷键。
+
+---
+
+## 后处理
+
+**Q：如何配置后处理？**
+
+在 **设置 > 高级 > 实验性功能** 中启用，然后开启 **后处理**，侧边栏会出现新的「后处理」分区。完整配置见[后处理](/docs/post-processing)。
+
+**Q：怎么确认后处理真的生效了？**
+
+检查日志（见[调试 > 查找日志](/docs/debug#查找日志)），应该能看到向服务商发起的 API 调用。后处理期间叠加层也会显示「处理中…」。
+
+**Q：后处理可以用本地 LLM 吗？**
+
+可以。用 LM Studio 等本地服务商的详细步骤见[后处理 > 本地 LLM 配置](/docs/post-processing#本地-llm-配置)。
+
+**Q：哪里能找到好的后处理提示词？**
+
+[Discussion #715](https://github.com/cjpais/handy/discussions/715) 里有用户分享的语法修正、标点补全、格式化等提示词。
+
+---
+
+## macOS
+
+**Q：可以通过 Homebrew 安装 Handy 吗？**
+
+可以：`brew install --cask handy`。注意这是社区维护的 cask，不是 Handy 开发者官方维护，可能落后于最新版本。
+
+---
+
+## Windows
+
+**Q：可以通过 winget 安装 Handy 吗？**
+
+可以：`winget install cjpais.Handy`。注意这是社区维护的包，不是官方维护，可能落后于最新版本。
+
+**Q：出现「vulkan-1.dll not found」错误**
+
+更新显卡驱动。详见[故障排除](/docs/troubleshooting#找不到-vulkan-1dllwindows)，也可以考虑使用自带 Vulkan 的 winget 包。
+
+**Q：Handy 无法粘贴到以管理员身份运行的应用**
+
+请也以管理员身份运行 Handy。Windows 禁止非提权进程向提权窗口发送输入。
+
+---
+
+## Linux
+
+**Q：Ubuntu 22.04 上 AppImage 报 GLIBC 错误**
+
+AppImage 需要 GLIBC 2.38+。请改用 `.deb` 包，或升级到 Ubuntu 24.04+。见[故障排除](/docs/troubleshooting#appimage-报-glibc-错误linux)。
+
+**Q：叠加层抢走焦点导致无法粘贴**
+
+在 **设置 > 高级** 中把 **叠加层位置** 设为 **None**，见[高级 > 叠加层位置](/docs/advanced#叠加层位置)。
+
+**Q：Linux 上应该用哪种粘贴/输入方式？**
+
+各合成器的推荐见[粘贴方式 > 输入工具](/docs/paste-methods#输入工具linux)。
+
+**Q：如何从窗口管理器或脚本控制 Handy？**
+
+使用 Unix 信号或命令行参数，示例和窗口管理器配置见[命令行](/docs/cli#信号控制)。
+
+**Q：在公司代理/防火墙后面无法下载模型**
+
+你可以手动下载模型并放进 models 目录：
+
+1. 打开 **关于** 找到应用数据目录
+2. 进入或创建 `models/` 文件夹
+3. 手动下载模型 `.bin` 文件（从 HuggingFace 或下载地址）
+4. 把 `.bin` 文件直接放入 `models/` 目录
+5. 重启 Handy

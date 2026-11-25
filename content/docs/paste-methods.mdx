@@ -1,0 +1,121 @@
+---
+title: 粘贴方式
+description: Handy 如何插入文本、该选哪种粘贴方式、Linux 输入工具以及剪贴板处理。
+---
+
+转录完成后，Handy 会把结果粘贴到光标所在的文本框。具体怎么做取决于 **设置 > 高级** 中的粘贴方式。
+
+macOS 上大多数人用默认值就行；Windows 和 Linux 上可能需要按你的环境换一种方式。
+
+## 可用的方式
+
+### 剪贴板 (Cmd/Ctrl+V)
+
+macOS 和 Windows 上的默认方式。把文本复制到剪贴板并模拟标准粘贴按键，适用于大多数应用，也是日常使用最可靠的方式。
+
+### Ctrl+Shift+V
+
+Windows 和 Linux 可用。适合把 `Ctrl+V` 用于其他用途的应用，或用 `Ctrl+Shift+V` 粘贴的终端。
+
+### Shift+Insert
+
+Windows 和 Linux 可用。适合终端模拟器、SSH 客户端和支持这个传统粘贴快捷键的老应用。
+
+**这是向 Windows Terminal、命令提示符和 PowerShell 粘贴的推荐方式。** 标准剪贴板粘贴在这些应用里可能不起作用，因为它们对 `Ctrl+V` 的处理方式不同。
+
+### 直接输入
+
+逐字符输入文本，不经过剪贴板。适合完全不支持粘贴的应用。
+
+**重要：** 直接输入没有考虑非美式键盘布局。如果你使用 AZERTY、QWERTZ 等布局，输出会错乱。请改用基于剪贴板的方式。
+
+### 无
+
+把转录复制到剪贴板，但不模拟任何粘贴按键。适合以下场景：
+
+- 转录时切换了窗口，想手动粘贴
+- 只需要文本进入剪贴板
+- 用剪贴板管理器处理输出
+
+### 外部脚本（仅 Linux）
+
+运行自定义脚本来处理粘贴，脚本路径在设置中指定，转录文本会传给脚本。适合自定义 Wayland 环境或特殊工作流。
+
+## 我应该用哪种？
+
+| 场景 | 推荐方式 |
+| --- | --- |
+| macOS 日常使用 | 剪贴板 (Cmd+V) |
+| Windows 日常使用 | 剪贴板 (Ctrl+V) |
+| Windows Terminal / CMD / PowerShell | Shift+Insert |
+| Linux (X11) | 剪贴板 (Ctrl+V) |
+| Linux (Wayland) | 剪贴板 (Ctrl+V)，并配置合适的输入工具 |
+| 终端模拟器 | Ctrl+Shift+V 或 Shift+Insert |
+| 拦截 Ctrl+V 的应用 | Ctrl+Shift+V |
+| 不支持粘贴的应用 | 直接输入 |
+| 剪贴板管理器工作流 | 无 |
+| 自定义 Linux/Wayland 环境 | 外部脚本 |
+
+如果某种方式对你不起作用，试试列表里的其他选项。默认值适合大多数用户，但特定的应用或系统配置可能需要不同的方式。
+
+## 输入工具（Linux）
+
+在 Linux 上使用基于剪贴板的粘贴方式时，Handy 需要一个输入工具来模拟粘贴按键。你可以在 **设置 > 高级** 中选择使用哪个工具，这个选项只在 Linux 上出现。
+
+| 工具 | 适用场景 |
+| --- | --- |
+| **Auto**（推荐） | Handy 自动选择已安装的最佳工具 |
+| **wtype** | Wayland 合成器（sway、Hyprland） |
+| **kwtype** | KDE/KWin Wayland |
+| **dotool** | Wayland，兼容大多数合成器 |
+| **ydotool** | Wayland，需要 ydotoold 守护进程运行 |
+| **xdotool** | X11 会话 |
+
+如果 Linux 上的粘贴不起作用，试着换一个输入工具。你可能需要先安装它：
+
+- **Arch**：`sudo pacman -S wtype`（或其他工具名）
+- **Debian/Ubuntu**：查看你的合成器文档推荐的软件包
+
+### 合成器建议
+
+- **X11**：配合 xdotool 开箱即用
+- **Wayland（sway、Hyprland）**：使用 `wtype`
+- **Wayland（KDE/KWin）**：试试 `ydotool`、`dotool` 或 `kwtype`
+- **Wayland（GNOME）**：GNOME 相关配置见 [Discussion #718](https://github.com/cjpais/handy/discussions/718)
+
+## 剪贴板处理
+
+Handy 有两种剪贴板处理模式，可在 **设置 > 高级** 中配置：
+
+- **不修改剪贴板** — 粘贴后恢复之前的剪贴板内容，剪贴板历史得以保留。
+- **复制到剪贴板** — 粘贴后把转录留在剪贴板里，方便在别处再次粘贴。
+
+## 粘贴延迟
+
+如果 Handy 粘贴了错误的文本（例如上一条剪贴板内容而不是这次转录），可能需要增大粘贴延迟。它是 Handy 在把文本复制到剪贴板和发送粘贴按键之间的等待时间。
+
+默认 60ms，可以在[调试](/docs/debug)设置里调大，建议尝试 60–200ms。
+
+## 故障排除
+
+### 文本没有被粘贴
+
+- 确认转录前光标位于文本框中
+- 试着换一种粘贴方式
+- macOS 上确认 Handy 具备辅助功能权限（**系统设置 > 隐私与安全性 > 辅助功能**）
+- Linux 上确认已安装并选中合适的输入工具
+- 在[调试](/docs/debug)设置里增大粘贴延迟
+
+### 非 QWERTY 键盘输出乱码
+
+如果在 AZERTY、QWERTZ 等非美式布局下看到乱码，你很可能用的是「直接输入」。请改用基于剪贴板的方式（剪贴板、Ctrl+Shift+V 或 Shift+Insert）。
+
+### 在管理员权限应用中无法粘贴（Windows）
+
+Windows 禁止非提权进程向提权窗口发送输入。如果 Handy 无法粘贴到以管理员身份运行的应用，请也以管理员身份运行 Handy。
+
+### 终端里无法粘贴
+
+- **Windows Terminal / CMD / PowerShell**：使用 Shift+Insert 粘贴方式
+- **Linux 终端**：尝试 Ctrl+Shift+V 粘贴方式
+- **SSH 会话**：尝试 Shift+Insert

@@ -1,0 +1,115 @@
+---
+title: 后处理
+description: 使用 AI 服务和自定义提示词清理、重排或改写转录文本。
+---
+
+## 概览
+
+后处理让你在粘贴之前把转录交给 AI 语言模型。它可以修正语法、重排格式、翻译、补全标点，或者执行任何你想要的转换。
+
+## 启用后处理
+
+后处理位于实验性功能开关之后：
+
+1. 打开 **设置 > 高级 > 实验性功能**
+2. 向下滚动并启用 **后处理**
+3. 设置侧边栏会出现新的 **后处理** 分区
+4. 配置服务商、填入 API Key、选择模型并编写提示词
+
+## 服务商
+
+Handy 支持多种后处理 AI 服务商：
+
+### 云端服务商
+
+| 服务商 | 说明 |
+| --- | --- |
+| **OpenAI** | 推荐 GPT-4o-mini |
+| **Anthropic** | 推荐 Claude Haiku |
+| **OpenRouter** | 用一个 API Key 访问众多模型 |
+| **Groq** | 推理速度极快 |
+| **Cerebras** | 推理速度快 |
+| **Z.AI** | 推荐 GLM-4.5-Air |
+
+### 端侧运行
+
+| 服务商 | 要求 |
+| --- | --- |
+| **Apple Intelligence** | Apple Silicon 的 macOS，macOS 26+ |
+
+### 自定义端点
+
+| 服务商 | 说明 |
+| --- | --- |
+| **自定义** | 任何 OpenAI 兼容的 API 端点，本地 LLM 就用这个 |
+
+## 独立快捷键
+
+后处理有自己独立的快捷键，与普通转录快捷键分开。只有这个快捷键会触发后处理，普通转录快捷键永远输出原始文本。快捷键可以在后处理设置分区里修改。
+
+## 自定义提示词
+
+你可以编写自定义提示词告诉 AI 如何处理文本。用 `${output}` 模板变量引用转录内容。
+
+### 示例提示词
+
+**修正语法和标点：**
+
+```
+Fix any grammar or punctuation errors in the following text,
+but don't change the meaning or tone: ${output}
+```
+
+**转换为要点列表：**
+
+```
+Convert the following text into concise bullet points: ${output}
+```
+
+**翻译成西班牙语：**
+
+```
+Translate the following English text to Spanish: ${output}
+```
+
+**把口语标点转成符号：**
+
+```
+Convert spoken punctuation words to their symbols (e.g., "period" to ".",
+"comma" to ",", "new line" to a line break). Don't change anything else: ${output}
+```
+
+## `${output}` 模板
+
+提示词中的 `${output}` 会在发送给 AI 之前替换为原始转录，这样你可以把转录放在提示词的任意位置。
+
+## 本地 LLM 配置
+
+任何提供 OpenAI 兼容 API 的本地 LLM 服务都可以使用。
+
+### LM Studio
+
+1. 安装并启动 [LM Studio](https://lmstudio.ai)
+2. 加载一个模型并启动本地服务
+3. 在 Handy 中把服务商设为 **自定义**
+4. 把 Base URL 设为 `http://localhost:1234/v1`
+5. 选择模型并编写提示词
+
+> 使用 LM Studio 配置本地后处理模型的详细步骤（包括模型与推理参数设置），见 [How to Post-Process Your Handy Speech-to-Text Transcripts Locally with LM Studio](https://kritrim.xyz/posts/3/3handypostprocess/)。
+
+## 推荐模型
+
+如果使用云端服务商，尽量选择比较聪明的模型。大多数 OpenAI、Claude 和 Gemini 模型都可以胜任。使用 OpenRouter 时尽量选参数量大于 20B 的模型。
+
+本地模型方面，Qwen3 8B 及以上表现不错。8B 以上的模型大多可用，但不要期待完美，可能需要调整提示词。
+
+## 限制
+
+- **增加延迟** — 转录完成后还需要一次 API 往返（或本地推理）
+- **云端服务商需要联网** — 离线时后处理会失败（转录仍然可用）
+- **小模型可能不遵循指令** — 3B 以下的模型经常忽略提示词或输出不可靠的结果
+- **思考/推理模型** — 带思维链的模型可能会把推理标签也输出到结果里
+
+## 社区提示词
+
+可以在 [Discussion #715](https://github.com/cjpais/handy/discussions/715) 找到用户分享的语法修正、标点补全、格式化等提示词。

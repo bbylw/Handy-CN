@@ -1,0 +1,126 @@
+---
+title: 模型
+description: 按语言、速度和准确率需求选择合适的语音识别模型。
+---
+
+## 概览
+
+Handy 支持多种语音识别模型。所有模型都在你的机器本地运行，不会向云端发送任何内容。
+
+## Cohere Transcribe
+
+[Cohere Transcribe](https://huggingface.co/CohereLabs/cohere-transcribe-03-2026) 是 Cohere 推出的 20 亿参数语音识别模型。**它是英文转录质量最高的推荐选择**，同时支持另外 13 种语言，输出带标点和大小写的文本。
+
+Handy 以量化的 GGUF 形式运行 Cohere Transcribe（[handy-computer/cohere-transcribe-03-2026-gguf](https://huggingface.co/handy-computer/cohere-transcribe-03-2026-gguf)），并启用 GPU 加速。它比 Parakeet 更大更慢，适合有独立 GPU 的机器；硬件较弱时 Parakeet V3 是更好的选择。
+
+Cohere Transcribe 不会自动检测语言，建议在 Handy 设置中手动选择语言。
+
+| 模型 | 大小 | 速度 | 准确率 | 语言 |
+| --- | --- | --- | --- | --- |
+| [Cohere Transcribe](https://huggingface.co/CohereLabs/cohere-transcribe-03-2026) | 约 1.8 GB | 中等 | 最高 | 14 种 |
+
+支持语言：英语、法语、德语、西班牙语、意大利语、葡萄牙语、荷兰语、波兰语、希腊语、阿拉伯语、日语、中文、越南语、韩语。
+
+## Parakeet
+
+[NVIDIA 的 Parakeet](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) 针对西方语言做了优化。**Parakeet V3 是大多数用户的推荐模型**：速度快、准确率高，支持 25 种语言。
+
+Parakeet 会把数字写成单词（例如 "one"、"two"、"three"）而不是数字字符。语言会自动检测，无法手动指定。
+
+| 模型 | 大小 | 速度 | 准确率 | 语言 |
+| --- | --- | --- | --- | --- |
+| [Parakeet V3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) | 约 478 MB | 快 | 高 | 25 种欧洲语言 |
+| [Parakeet V2](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2) | 约 473 MB | 快 | 高 | 仅英语 |
+
+Parakeet V3 支持语言：英语、西班牙语、法语、德语、葡萄牙语、俄语、意大利语、波兰语、荷兰语、罗马尼亚语、乌克兰语、捷克语、希腊语、瑞典语、匈牙利语、保加利亚语、丹麦语、芬兰语、斯洛伐克语、克罗地亚语、立陶宛语、斯洛文尼亚语、拉脱维亚语、爱沙尼亚语、马耳他语。
+
+## Whisper
+
+[OpenAI 的 Whisper](https://huggingface.co/openai/whisper-large-v3) 支持 99 种以上语言，并可选择翻译成英文。需要广泛多语言支持时选它最合适。
+
+Whisper 输出数字字符（"1"、"2"、"3"），可以指定转录语言或交给它自动检测。**Whisper Medium** 在硬件尚可的机器上是速度与准确率的良好平衡。
+
+| 模型 | 大小 | 速度 | 准确率 | 翻译 |
+| --- | --- | --- | --- | --- |
+| [Small](https://huggingface.co/openai/whisper-small) | 约 487 MB | 快 | 好 | 支持 |
+| [Medium](https://huggingface.co/openai/whisper-medium) | 约 492 MB | 中等 | 更好 | 支持 |
+| [Large](https://huggingface.co/openai/whisper-large-v3) | 约 1.1 GB | 较慢 | 最好 | 支持 |
+| [Turbo](https://huggingface.co/openai/whisper-large-v3-turbo) | 约 1.6 GB | 中等 | 高 | 不支持 |
+
+<details>
+<summary>Whisper 支持的语言（部分）</summary>
+
+英语、简体中文、繁体中文、西班牙语、印地语、阿拉伯语、法语、葡萄牙语、孟加拉语、俄语、日语、印尼语、德语、韩语、土耳其语、越南语、意大利语、泰语、乌尔都语、波兰语、乌克兰语、荷兰语、罗马尼亚语、波斯语、马来语、泰米尔语、泰卢固语、他加禄语、斯瓦希里语、捷克语、希腊语、匈牙利语、瑞典语、希伯来语、挪威语、丹麦语、芬兰语、马拉地语、古吉拉特语、卡纳达语、马拉雅拉姆语、旁遮普语、塞尔维亚语、克罗地亚语、保加利亚语、斯洛伐克语、加泰罗尼亚语、立陶宛语、斯洛文尼亚语、拉脱维亚语、爱沙尼亚语、尼泊尔语、僧伽罗语、阿姆哈拉语、高棉语、老挝语、缅甸语、阿塞拜疆语、乌兹别克语、哈萨克语、格鲁吉亚语、亚美尼亚语、阿尔巴尼亚语、波斯尼亚语、马其顿语、粤语、爪哇语、巽他语、豪萨语、约鲁巴语、索马里语、蒙古语、普什图语、信德语、阿萨姆语、南非荷兰语、马达加斯加语、绍纳语、林加拉语、加利西亚语、巴斯克语、威尔士语、冰岛语、马耳他语、白俄罗斯语、土库曼语、塔吉克语、鞑靼语、巴什基尔语、藏语、毛利语、卢森堡语、法罗语、布列塔尼语、奥克语、海地克里奥尔语、夏威夷语、拉丁语、梵语、意第绪语。
+
+</details>
+
+### Breeze ASR
+
+针对台湾地区国语的 Whisper 变体，支持中英混说（约 1.1 GB）。
+
+## Moonshine
+
+Moonshine 是轻量级、仅英语的模型，适合在性能较弱的硬件上快速转录。
+
+| 模型 | 大小 | 速度 | 准确率 |
+| --- | --- | --- | --- |
+| V2 Tiny | 约 31 MB | 最快 | 较低 |
+| V2 Small | 约 100 MB | 很快 | 好 |
+| V2 Medium | 约 192 MB | 快 | 更好 |
+| Base | 约 58 MB | 很快 | 好 |
+
+## GigaAM v3
+
+GigaAM v3 是俄语语音识别模型，支持标点、拉丁字母和数字。适合需要快速、准确本地转录的俄语用户。
+
+| 模型 | 大小 | 速度 | 准确率 | 语言 |
+| --- | --- | --- | --- | --- |
+| GigaAM v3 | 约 225 MB | 快 | 高 | 俄语 |
+
+## Canary
+
+[NVIDIA 的 Canary](https://huggingface.co/nvidia/canary-1b) 支持跨欧洲语言的转录和翻译，输出规范的标点、大小写，并做逆文本规范化（例如 "one hundred twenty three" → "123"）。1B v2 支持逆文本规范化，Flash 不支持。
+
+Canary 不支持自动语言检测：语言设为「auto」时它默认按英语处理。也就是说如果你说的是其他语言却选了 auto，Canary 会把你的话翻译成英语而不是按原语言转录。为了最好的效果请手动选择语言。
+
+| 模型 | 大小 | 速度 | 准确率 | 翻译 | 语言 |
+| --- | --- | --- | --- | --- | --- |
+| [Canary 180M Flash](https://huggingface.co/nvidia/canary-180m-flash) | 约 146 MB | 快 | 好 | 支持 | 4 种 |
+| [Canary 1B v2](https://huggingface.co/nvidia/canary-1b-v2) | 约 692 MB | 中等 | 高 | 支持 | 25 种 |
+
+## SenseVoice
+
+SenseVoice 是 FunAudioLLM 推出的快速模型，支持少量东亚语言以及英语。
+
+| 模型 | 大小 | 速度 | 准确率 | 语言 |
+| --- | --- | --- | --- | --- |
+| SenseVoice | 约 160 MB | 最快 | 好 | 5 种 |
+
+支持语言：中文、英语、日语、韩语、粤语。
+
+## 更换模型
+
+打开 Handy 设置，在下拉框中选择模型即可。新模型会在首次使用时下载。
+
+## 速度与准确率
+
+- **最快转录**：Moonshine 或 SenseVoice
+- **最均衡**：Parakeet V3（欧洲语言）
+- **最适合翻译**：Canary 1B v2（欧洲语言）
+- **最适合俄语**：GigaAM v3
+- **多语言最佳**：Whisper Small 或 Medium
+- **英文准确率最高**：Cohere Transcribe
+- **准确率最高**：Whisper Large
+
+## 自定义模型
+
+作为实验性功能，你可以加载自定义的 Whisper 兼容模型。把 `.bin` 模型文件放进 Handy 应用数据目录下的 `models/` 文件夹（路径见 **关于** 页），Handy 会在下次启动时发现它。
+
+## 硬件说明
+
+**Whisper 和 Cohere Transcribe** 会自动使用 GPU 加速：
+
+- **macOS**：Metal
+- **Windows/Linux**：Vulkan
+
+**其他所有模型**（Parakeet、Canary、Moonshine、SenseVoice、GigaAM）目前只在 CPU 上运行，GPU 加速支持即将到来。

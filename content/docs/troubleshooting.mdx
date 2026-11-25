@@ -1,0 +1,189 @@
+---
+title: 故障排除
+description: 常见问题、平台相关说明，以及按症状整理的解决方案。
+---
+
+## 调试模式
+
+启用调试模式可以查看详细日志。打开方法和日志位置见[调试](/docs/debug)页面。
+
+## 常见问题
+
+### Handy 没有转录任何内容
+
+- 检查系统层面麦克风是否被静音
+- 确认已经下载了模型（**设置 > 模型**）
+- 在 **设置 > 通用** 中换一个麦克风
+- 启用调试模式并检查日志中的错误
+
+### macOS 上快捷键突然失效（Secure Input）
+
+macOS 有一个叫 **Secure Input**（安全输入）的系统机制，用于保护密码输入框等内容。它激活时，macOS 会停止把部分按键事件送给 Handy。如果你的快捷键包含普通按键（例如 Option+Space）突然不触发，而只用修饰键的快捷键（例如只按 `fn`）仍然可用，很可能就是 Secure Input 导致的。较新版本的 Handy 能检测到这种情况，在设置中显示警告横幅（尽可能给出进程名），并自动把受影响的快捷键切换到备选方案，让它们继续可用。
+
+常见原因与解决方法：
+
+1. **终端或 iTerm2** — 在 Terminal（或 iTerm2）的应用菜单中关闭「安全键盘输入」
+2. **密码管理器** — 退出或更新它们；部分 1Password 和 KeePassXC 版本会在后台占用 Secure Input
+3. **卡住的 `loginwindow` 或占用后异常退出的应用** — 按 <kbd>Ctrl</kbd>+<kbd>Cmd</kbd>+<kbd>Q</kbd> 锁屏，然后用**输入密码**的方式（不要用 Touch ID）重新登录。如果还不行，就完全注销再登录
+
+你也可以自己查看是哪个进程占用了 Secure Input：
+
+```bash
+ioreg -l -w 0 | grep -o 'kCGSSessionSecureInputPID"=[0-9]*' | grep -o '[0-9]*' | head -1 | xargs ps -o pid,comm -p
+```
+
+注意 macOS 只能尽力上报，给出的进程不一定是真正的原因，占用进程退出后也可能查不到。Handy 的调试窗口（<kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>D</kbd>）里还有 **键盘诊断**，可以检查按键事件是否到达 Handy。
+
+只有当你确实有快捷键受影响时 Handy 才会显示警告横幅。Secure Input 期间有几项限制：
+
+- 使用 `fn` 加普通按键的快捷键（例如 `fn`+`End`）无法被备选方案覆盖，解决 Secure Input 之前不会生效 —— 横幅会把它们列出来
+- 带左右区分的修饰键快捷键（例如右侧 Option+Space）在备选方案生效期间会临时响应**任意一侧** —— 横幅会提示这一点
+- 只用修饰键的快捷键（只按 `fn`、只按左 Ctrl 等）不受影响，在 Secure Input 期间照常工作，所以如果你经常遇到这个情况，它们很适合用作按住说话
+- 解决 Secure Input 之前无法录制新快捷键，因为 Handy 看不到你按下的键
+
+### 文本没有被粘贴
+
+- 确认转录前光标位于文本框中
+- 在 **设置 > 高级** 中换一种粘贴方式（见[粘贴方式](/docs/paste-methods)）
+- macOS 上确认 Handy 具备辅助功能权限（**系统设置 > 隐私与安全性 > 辅助功能**）
+- Linux 上检查输入工具配置（见[粘贴方式 > 输入工具](/docs/paste-methods#输入工具linux)）
+- Windows 上可以尝试以管理员身份运行 Handy，并在[高级 > 实验性功能](/docs/advanced#实验性功能)中把 **键盘实现** 切换为 **Tauri Global Shortcut**
+- 在[调试](/docs/debug#粘贴延迟)设置里增大粘贴延迟
+
+### 粘贴了错误的文本
+
+如果 Handy 粘贴的是上一条剪贴板内容而不是这次转录，请在[调试](/docs/debug#粘贴延迟)设置里增大粘贴延迟。默认 60ms，试试 100–200ms。
+
+### 转录很慢
+
+- 换一个更小的模型（Moonshine Tiny 或 Whisper Small）
+- 检查是否启用了 GPU 加速（调试日志中可见）
+- 关闭其他占用 GPU 的应用
+- 在[高级](/docs/advanced#卸载模型)设置中配置模型卸载超时
+
+### 未检测到麦克风
+
+- 检查系统音频设置，确认麦克风被识别
+- 试着拔插麦克风
+- 使用 **设置 > 通用** 中麦克风下拉框旁的刷新按钮
+- Linux 上确认 PulseAudio 或 PipeWire 正在运行
+
+### Whisper 崩溃
+
+Whisper 模型在某些硬件配置上会崩溃，尤其是较旧的 CPU 和部分 Windows/Linux 系统。如果 Whisper 崩溃：
+
+1. **改用 Parakeet V3** —— 它是最稳定的模型，也是英语场景的推荐选择
+2. 换更小的 Whisper 模型（用 Small 代替 Medium 或 Large）
+3. 更新显卡驱动（需要 Vulkan 支持）
+4. 用 `--debug` 运行以捕获崩溃细节，便于报告 bug
+
+### 找不到 vulkan-1.dll（Windows）
+
+更新显卡驱动（NVIDIA、AMD 或 Intel）。GPU 加速需要 Vulkan。如果你的显卡太旧不支持 Vulkan，Handy 可能无法在你的系统上运行。
+
+- **NVIDIA**：从 [nvidia.com/drivers](https://www.nvidia.com/drivers) 下载
+- **AMD**：从 [amd.com/en/support](https://www.amd.com/en/support) 下载
+- **Intel**：从 [intel.com/content/www/us/en/download-center](https://www.intel.com/content/www/us/en/download-center/home.html) 下载
+
+### 非 QWERTY 键盘输出乱码
+
+如果使用 AZERTY、QWERTZ 等非美式布局时 Handy 输出乱码，你很可能用的是「直接输入」粘贴方式。请改用基于剪贴板的方式，详见[粘贴方式](/docs/paste-methods#非-qwerty-键盘输出乱码)。
+
+### Linux 上窗口空白
+
+某些 Linux 系统上 Handy 可能因为 WebKit 的 DMA-BUF 渲染问题显示空白窗口。较新版本的 Handy 会自动设置 `WEBKIT_DISABLE_DMABUF_RENDERER=1`。如果你用的是旧版本，请手动设置该环境变量：
+
+```bash
+WEBKIT_DISABLE_DMABUF_RENDERER=1 handy
+```
+
+### AppImage 报 GLIBC 错误（Linux）
+
+AppImage 需要 GLIBC 2.38+，而 Ubuntu 22.04 自带 GLIBC 2.35，不兼容。解决方案：
+
+- 改用 `.deb` 包而不是 AppImage
+- 升级到 Ubuntu 24.04+ 或其他 GLIBC 2.38+ 的发行版
+
+### Linux 上叠加层抢走焦点
+
+在某些 Linux 桌面环境中，Handy 的叠加层会把焦点从目标窗口抢走，导致无法粘贴。请在 **设置 > 高级** 中把 **叠加层位置** 设为 **None**，见[高级 > 叠加层位置](/docs/advanced#叠加层位置)。
+
+### Wayland 上叠加层不显示
+
+Wayland 叠加层需要 `gtk-layer-shell` 作为运行时依赖：
+
+- **Debian/Ubuntu**：`sudo apt install libgtk-layer-shell0`
+- **Arch**：`sudo pacman -S gtk-layer-shell`
+- **Fedora**：`sudo dnf install gtk4-layer-shell`
+
+注意：KDE Wayland 上会跳过 gtk-layer-shell 初始化以避免叠加层问题。
+
+### 模型下载失败
+
+如果模型下载中途失败且无法重新下载：
+
+1. 打开 **关于 > 应用数据目录**
+2. 进入 `models/` 文件夹
+3. 删除未下载完整的文件
+4. 重启 Handy 再试一次
+
+### 跳过初始设置界面
+
+如果卡在首次设置界面，可以手动修改 Handy 的设置来跳过：
+
+1. 完全关闭 Handy
+2. 打开 Handy 的应用数据目录：
+   - **Windows：** `%APPDATA%\com.pais.handy\`
+   - **macOS：** `~/Library/Application Support/com.pais.handy/`
+   - **Linux：** `~/.config/com.pais.handy/`
+3. 找到设置文件 `settings.json`，设置：
+
+   ```json
+   "onboarding_completed": true
+   ```
+
+4. 保存文件并重新启动 Handy
+
+这样应该会跳过设置界面，让你正常进入设置。
+
+## 平台相关说明
+
+### macOS
+
+- Handy 需要 **辅助功能** 和 **麦克风** 权限
+- 如果 Handy 无法粘贴，请在 **系统设置 > 隐私与安全性 > 辅助功能** 中重新添加它
+- 自动使用 Metal GPU 加速
+- 通过 Homebrew 安装：`brew install --cask handy`
+
+### Windows
+
+- 遇到权限问题时以管理员身份运行安装程序
+- GPU 加速需要 Vulkan 驱动
+- 确认音频驱动是最新的
+- 如果 Handy 无法粘贴到以管理员身份运行的应用，请也以管理员身份运行 Handy
+- 如果仍然遇到粘贴问题，在[高级 > 实验性功能](/docs/advanced#实验性功能)中把 **键盘实现** 切换为 **Tauri Global Shortcut**
+- 向终端（CMD、PowerShell）粘贴请使用 Shift+Insert 方式
+- 通过 winget 安装：`winget install cjpais.Handy`
+
+### Linux
+
+- AppImage 需要 FUSE（Ubuntu/Debian 上 `sudo apt install libfuse2`）
+- Wayland 用户需要配置[输入工具](/docs/paste-methods#输入工具linux)才能粘贴
+- X11 一般开箱即用
+- GPU 加速需要 Vulkan 驱动（用 `vulkan-tools` 验证）
+- 通过[信号或命令行参数](/docs/cli#信号控制)从脚本/窗口管理器控制 Handy
+- 如果叠加层抢走目标窗口的焦点，请把叠加层设为 None
+
+## 已知问题
+
+- **特定硬件上的 Whisper 不稳定** — Whisper 模型可能在旧 CPU 或特定 GPU 配置上崩溃，可用 Parakeet V3 作为稳定替代。
+- **Linux 上历史录音播放** — 在某些 Linux 配置中，历史记录的录音回放可能无法工作。
+
+## 获取帮助
+
+如果仍然无法解决：
+
+- 加入 [Discord](https://discord.gg/WVBeWsNXK4) 在支持频道提问
+- 在 [GitHub](https://github.com/cjpais/Handy) 提交应用 bug
+- 在[文档仓库](https://github.com/cjpais/handy.computer)提交文档问题
+- 发邮件到 [contact@handy.computer](mailto:contact@handy.computer)

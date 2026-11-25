@@ -1,0 +1,76 @@
+---
+title: 快速开始
+description: 安装 Handy、完成首次启动，并做出第一次语音转录。
+---
+
+## 下载与安装
+
+当前版本：**v0.10.2**。所有安装包都可以在 [GitHub Releases](https://github.com/cjpais/Handy/releases) 下载。
+
+**macOS** — 下载 Apple Silicon 或 Intel 的 `.dmg`，打开后把 Handy 拖进「应用程序」文件夹。也可以使用 Homebrew（社区维护的 cask）：
+
+```bash
+brew install --cask handy
+```
+
+**Windows** — 下载并运行安装包。也可以使用 winget（社区维护的包）：
+
+```bash
+winget install cjpais.Handy
+```
+
+**Linux** — 下载 `.deb` 并用 APT 安装，依赖会自动装好：
+
+```bash
+sudo apt install ./Handy_*.deb
+```
+
+AppImage 需要 GLIBC 2.38+ 和 FUSE（Ubuntu/Debian 上安装 `libfuse2`）。Linux 上的快捷键与粘贴还需要一些额外配置，请直接看 [Linux 安装](/docs/linux)。
+
+## 首次启动
+
+### 权限
+
+macOS 上 Handy 会请求两项权限，请全部允许：
+
+- **麦克风** — 用于采集你的声音
+- **辅助功能** — 用于把转录文本输入到其他应用
+
+### 选择模型
+
+首次启动时，Handy 会让你选择一个要下载的语音识别模型。所有模型都完全在你的设备上运行。
+
+- **Parakeet V3** 推荐给英语和欧洲语言用户。它在各种机器上都很快，准确率也很高。
+- **Whisper** 适合多语言场景，支持 99 种以上语言。想要性能与速度平衡选 Medium，机器较弱就选 Small。
+- **Cohere Transcribe** 适合追求最高质量英文转录的用户。它比 Parakeet 更大更慢，最好在有独立 GPU 的机器上使用。
+
+完整模型列表和支持语言见 [模型](/docs/models)。
+
+模型下载完成后 Handy 就可以用了，你会在系统托盘 / 菜单栏中看到它的图标。
+
+## 第一次转录
+
+1. 把光标放进任意文本框（浏览器、编辑器、聊天软件，任何能打字的地方）
+2. 按默认快捷键（`Option + Space`，Windows/Linux 为 `Ctrl + Space`）开始录音
+3. 正常说话
+4. 再次按下快捷键（按住说话模式下则松开按键）
+5. 文字会出现在文本框里
+
+就是这样。Handy 在本地完成转录，并把结果粘贴到光标所在的位置。
+
+## 快捷键
+
+| 平台 | 默认快捷键 |
+| --- | --- |
+| macOS | `Option + Space` |
+| Windows | `Ctrl + Space` |
+| Linux | `Ctrl + Space` |
+
+可以按住说话（默认），也可以在[通用设置](/docs/general)里关闭「按住说话」改用点按切换。快捷键本身也在那里修改。
+
+## 下一步
+
+- 在 [通用设置](/docs/general) 里选择麦克风、开启音频反馈
+- 阅读 [模型](/docs/models)，按语言和速度需求挑一个合适的模型
+- 了解 [高级设置](/docs/advanced) 中的叠加层、静音过滤和自定义词表
+- 配置 [后处理](/docs/post-processing)，用 AI 清理或改写你的文本

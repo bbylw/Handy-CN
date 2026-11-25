@@ -1,0 +1,71 @@
+---
+title: Linux 安装
+description: 在 X11 和 Wayland 上让快捷键和粘贴正常工作。
+---
+
+Handy 可以在 Linux 上运行，但快捷键和粘贴能否在其他应用里生效取决于你的桌面环境。大多数情况只需要下面一两步。
+
+先确认你用的是哪种显示服务器：
+
+```bash
+echo $XDG_SESSION_TYPE
+```
+
+输出 `x11` 或 `wayland`。
+
+## 1. 设置快捷键
+
+**X11 上** Handy 自带的快捷键在所有应用中都能用，可以直接跳到[第 2 步](#2-设置粘贴)。
+
+**Wayland 上**应用无法监听其他应用的按键，所以 Handy 的快捷键可能只在它的窗口位于前台时有效。请改为在桌面设置里添加一个运行下面命令的快捷键：
+
+```bash
+handy --toggle-transcription
+```
+
+按一次开始录音，再按一次停止。如果你用的是 AppImage，把 `handy` 换成 AppImage 文件的完整路径。
+
+- **GNOME**：设置 > 键盘 > 查看及自定义快捷键 > 自定义快捷键，然后点 **+**
+- **KDE Plasma**：系统设置 > 键盘 > 快捷键 > 新建 > 命令或脚本
+- **Hyprland**：`bind = SUPER, period, exec, handy --toggle-transcription`
+- **Sway / i3**：`bindsym $mod+period exec handy --toggle-transcription`
+
+桌面快捷键只能切换录音，所以这种方式用不了「按住说话」。如果你在 Wayland 上需要按住说话，请参阅 [Ubuntu GNOME Wayland 指南](https://github.com/cjpais/Handy/tree/main/docs/troubleshooting/ubuntu-26-04-gnome-wayland)。
+
+在 Ubuntu 上，`Ctrl+Space` 也可能被用来切换输入法。如果默认快捷键没反应，换一个组合键。
+
+## 2. 设置粘贴
+
+Handy 需要一个小工具才能把文本输入到其他应用。按你的环境安装：
+
+| 你的环境 | 安装 |
+| --- | --- |
+| X11 | `xdotool` |
+| GNOME 或 KDE 的 Wayland | `ydotool` 和 `wl-clipboard` |
+| 其他 Wayland（Sway、Hyprland…） | `wtype` 和 `wl-clipboard` |
+
+`ydotool` 还需要它的后台服务在运行，并且把你的用户加入 `input` 组。
+
+> **动手之前：** 加入 `input` 组意味着你运行的任何应用都能读取你的按键并代替你输入，而不只是 ydotool。如果你不希望这样，可以跳过下面的命令，把 **设置 > 高级** 中的 **粘贴方式** 设为 **None**。Handy 会把每次转录放进剪贴板，你自己用 Ctrl+V 粘贴。
+
+在 Ubuntu 上：
+
+```bash
+sudo apt install ydotool wl-clipboard
+sudo usermod -aG input "$USER"
+systemctl --user enable --now ydotool
+```
+
+注销并重新登录，然后把光标放到文本框里运行 `ydotool type hello` 验证。如果提示无法连接 socket，请参阅[这个修复](https://github.com/cjpais/Handy/issues/1549)。
+
+把 **设置 > 高级** 中的 **输入工具** 保持在 **Auto**，Handy 会自动选择已安装的工具。
+
+## 3. 文本输出不正确
+
+如果大写字母丢失，或在非美式键盘上输出错误的字符，请把 **设置 > 高级** 中的 **粘贴方式** 改为 **剪贴板 (Ctrl+V)**。在终端里改用 **Ctrl+Shift+V**。
+
+如果文本出现在错误的窗口，请把 **叠加层位置** 设为 **None**。
+
+## 还是不行？
+
+看看[故障排除](/docs/troubleshooting)，或者到 [Discord](https://discord.gg/WVBeWsNXK4) 提问。

@@ -3,6 +3,14 @@
 > **汉化说明**：本文档为 [Handy](https://github.com/cjpais/Handy) 项目的中文翻译版本，原项目地址：https://github.com/cjpais/Handy
 >
 > 当前对应上游版本：**v0.10.2**（2026 年 11 月）
+>
+> **站点说明**：本仓库同时托管 Handy 中文站点（落地页 + 中文文档），使用 Next.js 16 + Fumadocs 构建，文档源码在 `content/docs`，译自 https://handy.computer/docs。
+>
+> ```bash
+> npm install
+> npm run dev      # 本地预览 http://localhost:3000
+> npm run build    # 静态导出到 out/
+> ```
 
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/WVBeWsNXK4)
 
